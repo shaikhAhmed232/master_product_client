@@ -1,0 +1,66 @@
+<div class="container-lg sm:my-[2rem] xs:mx-auto px-[1rem]">
+    <app-top [pageName]="'Products'" [goToPage]="'Categories'"></app-top>
+    <div class="py-[10px]">
+        <form #productForm="ngForm" class="w-full">
+            <div class="py-[10px]">
+                <label class="font-bold font-serif">Product Name</label>
+                <input type="text" class="w-full border-2 rounded px-[2rem] py-[5px]"  name="product_name" required="true" #productName="ngModel" [(ngModel)]="newProduct.product_name">
+                <div *ngIf="productForm.submitted && productName.errors?.['required']">
+                    <span class="text-red-500">product name is required.</span>
+                </div>
+            </div>
+            <div class="py-[10px]">
+                <label class="font-bold font-sans" for="category">
+                    Category
+                </label>
+                <select name="category" class="w-full border-2 rounded px-[1rem] py-[5px] text-lg" #category="ngModel" required [(ngModel)]="newProduct.category_name">
+                    <option selected>category</option>
+                    <option *ngFor="let category of categories">
+                        {{category.category_name}}
+                    </option>
+                </select>
+                <div *ngIf="productForm.submitted && category.errors?.['required']">
+                    <span class="text-red-500">please select category of product is required.</span>
+                </div>
+            </div>
+            <div class="flex justify-center py-[10px]">
+                <button type="submit" class="bg-blue-500 text-white px-[5rem] py-[0.4rem] rounded mx-auto hover:bg-blue-600 transition" *ngIf="!editing" (click)="createProduct(productForm.value.product_name, productForm.value.category)">Create Product</button>
+                <button type="submit" class="bg-blue-500 text-white px-[5rem] py-[0.4rem] rounded mx-auto hover:bg-blue-600 transition" *ngIf="editing" (click)="updateProduct(productForm.value.product_name, productForm.value.category)">Edit Product</button>
+            </div>
+        </form>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Product id</th>
+            <th>Product name</th>
+            <th>Category id</th>
+            <th>Category name</th>
+        </tr>
+    </thead>
+        <tr *ngIf="!products.length">
+            <td colspan="4">
+                No Products
+            </td>
+        </tr>
+        <tr *ngFor="let product of products">
+            <td>
+                {{product.product_id}}
+            </td>
+            <td>
+                {{product.product_name}}
+            </td>
+            <td>
+                {{product.category_id}}
+            </td>
+            <td>
+                {{product.category_name}}
+            </td>
+            <td class="flex justify-between">
+                <button class="bg-sky-200 text-sm px-2 py-[4px] rounded" (click)="clikedEdit(product.product_id, product.product_name, product.category_name, product.category_id)">Edit</button>
+                <button class="bg-red-500 text-white text-sm px-2 py-[4px] rounded" (click)="deleteProduct(product.product_id)">Delete</button>
+            </td>
+        </tr>
+    </table>
+    <app-paginate [totalPage]="totalPage" [currentPage]="totalPage[0]" [lastPageIndex]="totalPage.length - 1" (pageToFetch)="getData($event)"></app-paginate>
+</div>

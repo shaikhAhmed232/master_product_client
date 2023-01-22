@@ -1,0 +1,9 @@
+<div class="max-w-md mx-auto flex text-[1rem] font-bold items-center justify-center my-3">
+    <div *ngIf="!isFirstPage()" class="border-2 rounded p-3 mx-2 cursor-pointer" (click)="changePageToPrev()">
+        prev
+    </div>
+    <div class="border-2 rounded p-3 mx-2 cursor-pointer" [ngClass]="{'selected_page': page === currentPage}" *ngFor="let page of totalPage" (click)="changePage(page)">{{page}}</div>
+    <div *ngIf="!isLastPage()" class="border-2 rounded p-3 mx-2 cursor-pointer" (click)="changePageToNext()">
+        next
+    </div>
+</div>
